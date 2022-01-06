@@ -4,6 +4,7 @@ import './index.css';
 import Login from './components/Login'
 import Logout from './components/Logout'
 import BestBooks from './components/BestBooks'
+import Profile from './components/Profile'
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -19,6 +20,7 @@ function App() {
      { isAuthenticated &&
         (
         <div>
+          <Profile />
           <BestBooks />
         </div>
         )
