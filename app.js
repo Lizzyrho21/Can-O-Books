@@ -6,18 +6,32 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var seedRouter = require(`./routes/seed`);
+var BookRouter = require('./routes/book');
 
 var app = express();
+let mongoose = require('mongoose');
+const cors = require("cors"); // relax the security applied to our APIs
 
 
-const { auth } = require('express-oauth2-jwt-bearer');
+
+//pull in a ref to mongodb
+let mongoDb = 'mongodb+srv://Lizzyboo22:Lizzyboo22@node-rest-shop.eaxp9.mongodb.net/Code401?retryWrites=true&w=majority';
+mongoose.connect(mongoDb, {});
+//set a connection property in the mongoose instance!
+mongoose.connection.on(`error`, console.error.bind(console, `Mongo error`));
+
+
+
+// const { auth } = require('express-oauth2-jwt-bearer');
+
+app.use(cors());
 
 // Authorization middleware. When used, the Access Token must
 // exist and be verified against the Auth0 JSON Web Key Set.
-const checkJwt = auth({
-  audience: 'https://canobooks/api',
-  issuerBaseURL: `https://dev-dub2pki9.us.auth0.com/`,
-});
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +45,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/seed', seedRouter);
+app.use('/book', BookRouter);
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -48,8 +68,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3002, () => {
-  console.log(`This app is listening at http://localhost:3002`)
+app.listen(3004, () => {
+  console.log(`This app is listening at http://localhost:3004`)
 })
 
 module.exports = app;
