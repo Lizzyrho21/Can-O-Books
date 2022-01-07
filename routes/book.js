@@ -24,6 +24,7 @@ router.get("/", function(req,res,next) {
 // POST request
  router.post('/', (req,res) => {
      let bodyData = req.body;// body of server
+     //this makes that post to our DB
      Books.create(bodyData, (errors, results) => {
          errors ? res.send(error) : res.send(results);
      })

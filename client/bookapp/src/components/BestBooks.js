@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import BookCard from './BookCard';
+import FormButton from './FormButton';
 
 const BestBooks = () => {
 const { isAuthenticated, isLoading } = useAuth0();
@@ -56,6 +57,7 @@ useEffect(() => {
         ) : (
           <h1>No Books available  😔 </h1>
         )}
+        <FormButton/>
       </div>
     )
     // return (
