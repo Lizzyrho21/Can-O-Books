@@ -17,7 +17,6 @@ ReactDOM.render(
     clientId="BFv8rMReflO8yfBikY9yaYWics7olClj"
     redirectUri={window.location.origin}
   >
-  <h1>Hello</h1>
     <App />
     
   </Auth0Provider>,

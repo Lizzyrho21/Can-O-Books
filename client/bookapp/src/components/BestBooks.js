@@ -8,8 +8,9 @@ const { isAuthenticated, isLoading } = useAuth0();
     }
 
     return (
+     
         isAuthenticated && (
-            <div>
+            <div style={{marginTop:"8rem"}}>
               <h1>No Books available  😔 </h1>
             </div>
           )

@@ -5,13 +5,8 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import BestBooks from './components/BestBooks'
 import Profile from './components/Profile'
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Link,
-  NavLink
- } from "react-router-dom";
+ import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
+
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -24,18 +19,28 @@ function App() {
 
   return (
  <div className="App">
-      
-      <header className="App-header">
-      {!isAuthenticated ? <Login /> :  <Logout /> }
-      <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        { isAuthenticated &&
     
-        <Route path="users/*" element={<Users />} />}
-      </Routes>
-    </BrowserRouter>
+      <header style={{backgroundColor: "rgb(59,68,75)", height:"10vh"}} className="App-header">
+      
+      
+      <Router>
+      <nav>
+      {!isAuthenticated ? <Login /> :  <Logout /> }
+      { isAuthenticated &&
+        <Link to="/profile">My Profile</Link>}
+        <Link to="/home">Home</Link>
+      </nav>
+        <Routes>
+
+    <Route path="/home" element={<BestBooks/>} />
+        <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Router>
+ 
     </header>
+
+  
+
     </div>
 
 
@@ -50,26 +55,26 @@ function App() {
         );
 }
 
-function Users() {
-  /* All <Route path> and <Link to> values in this
-     component will automatically be "mounted" at the
-     /users URL prefix since the <Users> element is only
-     ever rendered when the URL matches /users/*
-  */
-  return (
-    <div>
-      <NavLink>
-        <Link to="profile">My Profile</Link>
-      </NavLink>
-      <BestBooks/>
-
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="profile" element={<Profile />} />
-      </Routes>
-    </div>
-  );
-}
+// function Loggedin() {
+//   /* All <Route path> and <Link to> values in this
+//      component will automatically be "mounted" at the
+//      /users URL prefix since the <Users> element is only
+//      ever rendered when the URL matches /users/*
+//   */
+//   return (
+//     <div>
+//       <nav>
+//         <Link to="profile">My Profile</Link>
+//       </nav>
+     
+//     <Router>
+//       <Routes>
+//         <Route path="/profile" element={<Profile />} />
+//       </Routes>
+//       </Router>
+//     </div>
+//   );
+// }
 
 export default App;
 
