@@ -3,60 +3,59 @@ import Form from 'react-bootstrap/Form';
 import {FloatingLabel} from 'react-bootstrap';
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BookFormModal = ({clicked, setClicked}) => {
-    const FormData = require('form-data');
     const url = 'http://localhost:3004/';
        //Handles close of modal
         const handleClose = () => setClicked(false);
         //Handles open of modal
         const handleShow = clicked;
-    
+
+    //handle form data 
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [email, setEmail] = useState('');
+    const [data, setData] = useState(null);
 
 
-    //handles our form data
-    const [formValue, setformValue] = useState({
-        title: '',
-        description: '', 
-        email: '',
-        });
+    //add toast success message 
+    const showToast = () => {
+      toast("Submission successful!")
+    };
 
-        const handleSubmit = async() => {
-            // store the states in the form data
-            const loginFormData = new FormData();
-            loginFormData.append("title", formValue.title);
-            loginFormData.append("description", formValue.description);
-            loginFormData.append("email", formValue.email);
-          
-            try {
-              // make axios post request
-              const response = await axios({
-                method: "post",
-                url: `${url}book`,
-                data: loginFormData,
-                headers: { "Content-Type": "multipart/form-data" },
-              }); console.log(response.data);
-            } catch(error) {
-              console.log(error)
-            }
-          }
-
-//handles the event that triggers when form data is submitted
-const handleChange = (event) => {
-    //useeffect here
-    setformValue({
-        //spread operator...
-      ...formValue,
-      [event.target.name]: event.target.value
-    });
-   
+const handleSubmit = () => {
+  const data = {
+    title: title,
+    description: description,
+    email:email,
   }
+  axios.post(`${url}book`, data).then(res => {
+    setData(res.data);
+    setTitle('');
+    setDescription('');
+    setEmail('');
+    handleClose();
+    window.location.reload()
+    showToast();
+   
+  }).catch(err => {
+    console.error(`Error: ${err}`)
+  });
+}
+
+
+
 
 
 
         
 
     return (
+
+      
+     
         
         <div>
             
@@ -67,22 +66,21 @@ const handleChange = (event) => {
                     <Modal.Title>Add a Book</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form onSubmit={handleChange}>
+                        <Form>
                 <Form.Group> 
                 <Form.Label>Title: </Form.Label>
-                <Form.Control type="text"  placeholder="name input" onChange={handleChange}/>  
+                <input type="text"  placeholder="name input" 
+                value={title}
+                onChange={e => setTitle(e.target.value)}/>  
                 </Form.Group> 
 
                 <Form.Group>  
 
                 <FloatingLabel controlId="floatingTextarea2" label="Description">
-                <Form.Control
-                as="textarea"
-               
-                onChange={handleChange}
-                placeholder="Put your description of book here"
-                style={{ height: '100px', marginTop: '17px' }}
-            />
+                <input type="textarea"  placeholder="description input" 
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                style={{ height: '100px', marginTop: '17px' }}/> 
             </FloatingLabel>
             </Form.Group>
 
@@ -90,7 +88,9 @@ const handleChange = (event) => {
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email"  placeholder="Enter email" onChange={handleChange}/>
+                <input type="email"  placeholder="Enter email"
+                value={email}
+                onChange={e => setEmail(e.target.value)} />
                 </Form.Group>     
                 </Form>       
                 </Modal.Body>
@@ -104,7 +104,7 @@ const handleChange = (event) => {
                     </Modal.Footer>
                 </Modal>
         
-            
+                <ToastContainer />
         </div> 
     )
 }
