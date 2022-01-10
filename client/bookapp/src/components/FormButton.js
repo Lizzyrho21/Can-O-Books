@@ -1,6 +1,6 @@
 
 import { Button } from 'react-bootstrap';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BookFormModal from './BookFormModal';
 
 
@@ -13,8 +13,8 @@ const FormButton = () => {
 
     return (
         <>
-            <Button onClick={handleClick} >Add Form </Button>  
-            <BookFormModal clicked={click}/>
+            <Button onClick={handleClick} >Add Book </Button>  
+            <BookFormModal clicked={click} setClicked={setClick}/>
         
         </>
     )
